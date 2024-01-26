@@ -1,6 +1,28 @@
 import os
 from fileclass import File
 
+def cleanup():
+    return
+
+def stop_files_moving():
+    try:
+        fname = input()
+        object(fname).set_move_false()
+        print(fname, 'Will stay in its original folder, if there are any other files you do not want to move, enter "Y"')
+        response = input()
+        if response == "Y":
+            print("Enter file name:")
+            stop_files_moving()
+
+    except:
+        print('That is not a valid file name, please enter the exact file name or enter "EXIT" to commence cleanup.')
+        answer = input()
+        if answer == "EXIT":
+            return
+        else:
+            stop_files_moving()
+
+
 #with os.scandir(r"C:\Users\munki\Documents\cleanup test") as entries:
 with os.scandir(r"C:\Users\munki\Downloads") as entries:
     for entry in entries:
@@ -24,6 +46,19 @@ with os.scandir(r"C:\Users\munki\Downloads") as entries:
 
         else:
             move = False
+            newdir = "Not being moved"
 
-        entry.name = File(newdir, move)
-        print(entry.name, "--->", newdir, move)
+        name = entry.name
+        name = File(newdir, move)
+        print(entry.name, "--->", name.get_newdir() + ",", name.get_move())
+
+print()
+print('Are there any files you do not want to move? Enter "yes" if there are:')
+answer = input()
+
+if answer == "yes":
+    print("Enter file name:")
+    stop_files_moving()
+
+else:
+    cleanup()
